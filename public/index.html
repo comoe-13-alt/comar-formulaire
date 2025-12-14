@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#13134C">
+  <title>COMAR Assurances - Formulaire</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --comar-blue: #13134C;
+      --comar-red: #E31E24;
+      --white: #FFFFFF;
+      --bg-light: #F8F9FC;
+      --text-dark: #2C3E50;
+      --text-light: #6B7280;
+      --success: #10B981;
+      --shadow-sm: 0 2px 8px rgba(19, 19, 76, 0.08);
+      --shadow-md: 0 4px 16px rgba(19, 19, 76, 0.12);
+      --shadow-lg: 0 8px 32px rgba(19, 19, 76, 0.16);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #F8F9FC 0%, #E8EBF3 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(19, 19, 76, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(227, 30, 36, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .logo-container {
+      display: none; /* Logo sera maintenant dans le form-header */
+    }
+
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--white);
+      padding: 12px 20px;
+      box-shadow: var(--shadow-sm);
+      z-index: 999;
+    }
+
+    .progress-bar-wrapper {
+      width: 100%;
+      height: 6px;
+      background: #E5E7EB;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--comar-red) 0%, var(--comar-blue) 100%);
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 10px;
+    }
+
+    .progress-text {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .form-container {
+      position: relative;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 80px 20px 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.8s ease;
+    }
+    
+    .form-header img {
+      max-width: 140px;
+      height: auto;
+      margin: 0 auto 24px;
+      display: block;
+      animation: fadeInDown 0.8s ease;
+    }
+
+    .form-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--comar-blue);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .form-header p {
+      font-size: 16px;
+      color: var(--text-light);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .questions-container {
+      position: relative;
+      min-height: 420px;
+    }
+
+    .question-wrapper {
+      opacity: 0;
+      transform: translateY(20px);
+      position: absolute;
+      width: 100%;
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .question-wrapper.active {
+      opacity: 1;
+      transform: translateY(0);
+      position: relative;
+      pointer-events: all;
+    }
+
+    .question-wrapper.exiting {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    .question-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: var(--shadow-md);
+      animation: cardPop 0.5s ease;
+    }
+
+    .question-number {
+      font-size: 13px;
+      color: var(--comar-red);
+      margin-bottom: 16px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(227, 30, 36, 0.08);
+      border-radius: 20px;
+    }
+
+    .question label {
+      display: block;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      line-height: 1.4;
+      color: var(--comar-blue);
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 18px 20px;
+      font-size: 17px;
+      background: var(--bg-light);
+      border: 2px solid transparent;
+      border-radius: 14px;
+      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: var(--comar-blue);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(19, 19, 76, 0.08);
+    }
+
+    .input-group input::placeholder {
+      color: #9CA3AF;
+      opacity: 1;
+    }
+
+    .input-hint {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 10px;
+      padding-left: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .input-hint::before {
+      content: '💡';
+      font-size: 14px;
+    }
+
+    .error-message {
+      color: var(--comar-red);
+      font-size: 13px;
+      margin-top: 8px;
+      padding-left: 4px;
+      display: none;
+      font-weight: 500;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.4s ease;
+    }
+
+    .navigation-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      padding: 16px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: var(--comar-blue);
+      color: var(--white);
+      flex: 1;
+      box-shadow: 0 4px 14px rgba(19, 19, 76, 0.25);
+    }
+
+    .btn-primary:active {
+      box-shadow: 0 2px 8px rgba(19, 19, 76, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--comar-blue);
+      border: 2px solid var(--bg-light);
+      padding: 14px 26px;
+      min-width: 100px;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .success-screen.show {
+      display: block;
+    }
+
+    .thumbs-up-container {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Anneau de pulsation COMAR */
+    .thumbs-up-container::before,
+    .thumbs-up-container::after {
+      content: '';
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border: 3px solid var(--comar-red);
+      border-radius: 50%;
+      opacity: 0;
+      animation: pulse 2s ease-out infinite;
+    }
+    
+    .thumbs-up-container::after {
+      animation-delay: 1s;
+      border-color: var(--comar-blue);
+    }
+
+    .circle-bg {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background: linear-gradient(135deg, var(--comar-blue) 0%, var(--comar-red) 100%);
+      border-radius: 50%;
+      animation: circlePulse 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 12px 40px rgba(19, 19, 76, 0.4);
+    }
+
+    .circle-bg::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: innerGlow 1.5s ease infinite;
+    }
+    
+    .circle-bg::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 60%;
+      background: var(--white);
+      border-radius: 50%;
+      opacity: 0.15;
+    }
+
+    .thumbs-up {
+      position: relative;
+      z-index: 2;
+      font-size: 80px;
+      animation: thumbsAppear 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s both;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+    }
+
+    .success-screen h2 {
+      font-size: 32px;
+      margin-bottom: 16px;
+      font-weight: 700;
+      color: var(--comar-blue);
+      animation: fadeInUp 0.6s ease 0.5s both;
+    }
+
+    .success-screen p {
+      font-size: 17px;
+      color: var(--text-light);
+      line-height: 1.6;
+      max-width: 400px;
+      margin: 0 auto;
+      animation: fadeInUp 0.6s ease 0.6s both;
+    }
+
+    .success-checkmark {
+      margin-top: 24px;
+      animation: fadeInUp 0.6s ease 0.7s both;
+    }
+
+    .success-checkmark span {
+      display: inline-block;
+      padding: 10px 20px;
+      background: rgba(19, 19, 76, 0.08);
+      color: var(--comar-blue);
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .loader {
+      display: none;
+      width: 50px;
+      height: 50px;
+      margin: 60px auto;
+      border: 4px solid rgba(19, 19, 76, 0.1);
+      border-top-color: var(--comar-blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .loader.show {
+      display: block;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes cardPop {
+      from {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes circlePulse {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes thumbsAppear {
+      0% {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+      }
+      70% {
+        transform: scale(1.1) rotate(5deg);
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes innerGlow {
+      0%, 100% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+      50% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.3);
+        opacity: 0.4;
+      }
+      100% {
+        transform: scale(1.6);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .form-header h1 {
+        font-size: 24px;
+      }
+      
+      .form-header img {
+        max-width: 120px;
+      }
+
+      .question label {
+        font-size: 20px;
+      }
+
+      .input-group input {
+        font-size: 16px;
+        padding: 16px 18px;
+      }
+
+      .btn {
+        padding: 14px 24px;
+        font-size: 15px;
+      }
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      input {
+        font-size: 16px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-container">
+    <div class="progress-bar-wrapper">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">Question 1 sur 5</div>
+  </div>
+
+  <div class="form-container">
+    <div class="form-header">
+      <img src="hero-img.png" alt="COMAR Assurances">
+      <h1>Bienvenue chez COMAR</h1>
+      <p>Quelques informations pour mieux vous servir</p>
+    </div>
+
+    <form id="contactForm" method="POST">
+      <div class="questions-container">
+        <div class="question-wrapper active" data-question="1">
+          <div class="question-card">
+            <div class="question-number">QUESTION 1/5</div>
+            <label for="nom">Quel est votre nom ?</label>
+            <div class="input-group">
+              <input type="text" id="nom" name="nom" placeholder="Votre nom" autocomplete="family-name" required>
+              <div class="error-message" id="error-nom">Veuillez entrer votre nom</div>
+            </div>
+            <div class="input-hint">Appuyez sur Entrée pour continuer</div>
+          </div>
+          <div class="navigation-buttons">
+            <button type="button" class="btn btn-primary" onclick="nextQuestion(1)">Continuer →</button>
+          </div>
+        </div>
+
+        <div class="question-wrapper" data-question="2">
+          <div class="question-card">
+            <div class="question-number">QUESTION 2/5</div>
+            <label for="prenom">Et votre prénom ?</label>
+            <div class="input-group">
+              <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" autocomplete="given-name" required>
+              <div class="error-message" id="error-prenom">Veuillez entrer votre prénom</div>
+            </div>
+          </div>
+          <div class="navigation-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevQuestion(2)">← Retour</button>
+            <button type="button" class="btn btn-primary" onclick="nextQuestion(2)">Continuer →</button>
+          </div>
+        </div>
+
+        <div class="question-wrapper" data-question="3">
+          <div class="question-card">
+            <div class="question-number">QUESTION 3/5</div>
+            <label for="telephone">Votre numéro de téléphone ?</label>
+            <div class="input-group">
+              <input type="tel" id="telephone" name="telephone" placeholder="+225 07 12 34 56 78" autocomplete="tel" required>
+              <div class="error-message" id="error-telephone">Numéro invalide</div>
+            </div>
+            <div class="input-hint">Avec l'indicatif si possible</div>
+          </div>
+          <div class="navigation-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevQuestion(3)">← Retour</button>
+            <button type="button" class="btn btn-primary" onclick="nextQuestion(3)">Continuer →</button>
+          </div>
+        </div>
+
+        <div class="question-wrapper" data-question="4">
+          <div class="question-card">
+            <div class="question-number">QUESTION 4/5</div>
+            <label for="email">Votre adresse email ?</label>
+            <div class="input-group">
+              <input type="email" id="email" name="email" placeholder="nom@exemple.com" autocomplete="email" required>
+              <div class="error-message" id="error-email">Email invalide</div>
+            </div>
+          </div>
+          <div class="navigation-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevQuestion(4)">← Retour</button>
+            <button type="button" class="btn btn-primary" onclick="nextQuestion(4)">Continuer →</button>
+          </div>
+        </div>
+
+        <div class="question-wrapper" data-question="5">
+          <div class="question-card">
+            <div class="question-number">QUESTION 5/5</div>
+            <label for="annee">Votre année de naissance ?</label>
+            <div class="input-group">
+              <input type="number" id="annee" name="annee" placeholder="1990" min="1900" max="2024" inputmode="numeric" required>
+              <div class="error-message" id="error-annee">Année invalide</div>
+            </div>
+          </div>
+          <div class="navigation-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevQuestion(5)">← Retour</button>
+            <button type="submit" class="btn btn-primary" id="submitBtn">Envoyer ✓</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="loader" id="loader"></div>
+
+      <div class="success-screen" id="successScreen">
+        <div class="thumbs-up-container">
+          <div class="circle-bg"></div>
+          <div class="thumbs-up">👍</div>
+        </div>
+        <h2>Merci !</h2>
+        <p>Vos informations ont été transmises avec succès. Notre équipe vous recontactera très bientôt.</p>
+        <div class="success-checkmark">
+          <span>✓ Formulaire envoyé</span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let currentQuestion = 1;
+    const totalQuestions = 5;
+
+    function updateProgress() {
+      const progress = (currentQuestion / totalQuestions) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+      document.getElementById('progressText').textContent = `Question ${currentQuestion} sur ${totalQuestions}`;
+    }
+
+    function validateField(questionNumber) {
+      let input, errorElement, isValid = true;
+
+      switch(questionNumber) {
+        case 1:
+          input = document.getElementById('nom');
+          errorElement = document.getElementById('error-nom');
+          isValid = input.value.trim().length > 0;
+          break;
+        case 2:
+          input = document.getElementById('prenom');
+          errorElement = document.getElementById('error-prenom');
+          isValid = input.value.trim().length > 0;
+          break;
+        case 3:
+          input = document.getElementById('telephone');
+          errorElement = document.getElementById('error-telephone');
+          const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/;
+          isValid = phoneRegex.test(input.value.trim());
+          break;
+        case 4:
+          input = document.getElementById('email');
+          errorElement = document.getElementById('error-email');
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          isValid = emailRegex.test(input.value.trim());
+          break;
+        case 5:
+          input = document.getElementById('annee');
+          errorElement = document.getElementById('error-annee');
+          const year = parseInt(input.value);
+          isValid = year >= 1900 && year <= 2024;
+          break;
+      }
+
+      if (!isValid) {
+        errorElement.classList.add('show');
+        input.style.borderColor = 'var(--comar-red)';
+        if (navigator.vibrate) navigator.vibrate(100);
+        return false;
+      } else {
+        errorElement.classList.remove('show');
+        input.style.borderColor = 'transparent';
+        return true;
+      }
+    }
+
+    function nextQuestion(current) {
+      if (!validateField(current)) return;
+
+      if (current < totalQuestions) {
+        const currentWrapper = document.querySelector(`.question-wrapper[data-question="${current}"]`);
+        const nextWrapper = document.querySelector(`.question-wrapper[data-question="${current + 1}"]`);
+
+        currentWrapper.classList.add('exiting');
+        setTimeout(() => {
+          currentWrapper.classList.remove('active', 'exiting');
+          nextWrapper.classList.add('active');
+          nextWrapper.querySelector('input').focus();
+        }, 250);
+
+        currentQuestion = current + 1;
+        updateProgress();
+      }
+    }
+
+    function prevQuestion(current) {
+      if (current > 1) {
+        const currentWrapper = document.querySelector(`.question-wrapper[data-question="${current}"]`);
+        const prevWrapper = document.querySelector(`.question-wrapper[data-question="${current - 1}"]`);
+
+        currentWrapper.classList.remove('active');
+        prevWrapper.classList.add('active');
+        prevWrapper.querySelector('input').focus();
+
+        currentQuestion = current - 1;
+        updateProgress();
+      }
+    }
+
+    document.querySelectorAll('input').forEach((input, index) => {
+      input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const questionNum = index + 1;
+          if (questionNum < totalQuestions) {
+            nextQuestion(questionNum);
+          } else {
+            document.getElementById('submitBtn').click();
+          }
+        }
+      });
+
+      input.addEventListener('input', function() {
+        const errorId = 'error-' + this.id;
+        const errorElement = document.getElementById(errorId);
+        if (errorElement) {
+          errorElement.classList.remove('show');
+          this.style.borderColor = 'transparent';
+        }
+      });
+    });
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      if (!validateField(5)) return;
+
+      if (navigator.vibrate) navigator.vibrate([50, 100, 50]);
+
+      document.querySelector('.questions-container').style.display = 'none';
+      document.getElementById('loader').classList.add('show');
+
+      const formData = new FormData(this);
+      
+      // Convertir FormData en JSON
+      const data = {
+        nom: formData.get('nom'),
+        prenom: formData.get('prenom'),
+        telephone: formData.get('telephone'),
+        email: formData.get('email'),
+        annee: formData.get('annee')
+      };
+
+      fetch('/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        // Vérifier si la réponse est OK (status 200-299)
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        document.getElementById('loader').classList.remove('show');
+        
+        if (data.success) {
+          document.getElementById('successScreen').classList.add('show');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          alert('Une erreur est survenue: ' + (data.message || 'Veuillez réessayer.'));
+          document.querySelector('.questions-container').style.display = 'block';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('loader').classList.remove('show');
+        
+        // Message d'erreur plus spécifique
+        let errorMessage = 'Une erreur est survenue. ';
+        if (!navigator.onLine) {
+          errorMessage += 'Vérifiez votre connexion internet.';
+        } else {
+          errorMessage += 'Veuillez réessayer ou contacter le support.';
+        }
+        
+        alert(errorMessage);
+        document.querySelector('.questions-container').style.display = 'block';
+      });
+    });
+
+    updateProgress();
+
+    setTimeout(() => {
+      document.getElementById('nom').focus();
+    }, 500);
+  </script>
+</body>
+</html>
