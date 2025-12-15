@@ -92,111 +92,120 @@ app.post('/send-email', async (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nouvelle soumission de formulaire</title>
+    <title>Nouveau Contact - COMAR Assurances</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7fa;">
-    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f4f7fa; padding: 40px 20px;">
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f5f5f5;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f5f5f5; padding: 40px 20px;">
         <tr>
             <td align="center">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden;">
+                <!-- Container principal -->
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
                     
-                    <!-- En-tête avec gradient COMAR -->
+                    <!-- En-tête simple -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #13134C 0%, #E31E24 100%); padding: 40px 30px; text-align: center;">
-                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;">
+                        <td style="background-color: #13134C; padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600;">
                                 Nouveau Contact
                             </h1>
-                            <p style="margin: 8px 0 0 0; color: rgba(255, 255, 255, 0.9); font-size: 14px; font-weight: 400;">
-                                Formulaire soumis le ${dateSubmission}
+                            <p style="margin: 10px 0 0 0; color: rgba(255, 255, 255, 0.9); font-size: 14px;">
+                                ${dateSubmission}
                             </p>
                         </td>
                     </tr>
                     
-                    <!-- Contenu principal -->
+                    <!-- Contenu -->
                     <tr>
-                        <td style="padding: 40px 30px;">
-                            <p style="margin: 0 0 30px 0; color: #4a5568; font-size: 16px; line-height: 1.5;">
-                                Vous avez reçu une nouvelle soumission de formulaire avec les informations suivantes :
+                        <td style="padding: 30px;">
+                            
+                            <!-- Message -->
+                            <p style="margin: 0 0 25px 0; color: #333333; font-size: 16px; line-height: 1.5;">
+                                Vous avez reçu une nouvelle demande de contact :
                             </p>
                             
                             <!-- Tableau des informations -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px;">
                                 
+                                <!-- Nom -->
                                 <tr>
-                                    <td style="padding: 18px 20px; background-color: #f7fafc; border-bottom: 1px solid #e2e8f0; width: 35%;">
-                                        <strong style="color: #2d3748; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
-                                            Nom
-                                        </strong>
+                                    <td style="padding: 15px; background-color: #f8f9fa; border-bottom: 1px solid #e9ecef; width: 30%;">
+                                        <strong style="color: #13134C; font-size: 14px;">Nom</strong>
                                     </td>
-                                    <td style="padding: 18px 20px; background-color: #ffffff; border-bottom: 1px solid #e2e8f0; color: #1a202c; font-size: 16px;">
+                                    <td style="padding: 15px; background-color: #ffffff; border-bottom: 1px solid #e9ecef; color: #333333; font-size: 15px;">
                                         ${nom}
                                     </td>
                                 </tr>
                                 
+                                <!-- Prénom -->
                                 <tr>
-                                    <td style="padding: 18px 20px; background-color: #f7fafc; border-bottom: 1px solid #e2e8f0;">
-                                        <strong style="color: #2d3748; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
-                                            Prénom
-                                        </strong>
+                                    <td style="padding: 15px; background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                                        <strong style="color: #13134C; font-size: 14px;">Prénom</strong>
                                     </td>
-                                    <td style="padding: 18px 20px; background-color: #ffffff; border-bottom: 1px solid #e2e8f0; color: #1a202c; font-size: 16px;">
+                                    <td style="padding: 15px; background-color: #ffffff; border-bottom: 1px solid #e9ecef; color: #333333; font-size: 15px;">
                                         ${prenom}
                                     </td>
                                 </tr>
                                 
+                                <!-- Téléphone -->
                                 <tr>
-                                    <td style="padding: 18px 20px; background-color: #f7fafc; border-bottom: 1px solid #e2e8f0;">
-                                        <strong style="color: #2d3748; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
-                                            Téléphone
-                                        </strong>
+                                    <td style="padding: 15px; background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                                        <strong style="color: #13134C; font-size: 14px;">Téléphone</strong>
                                     </td>
-                                    <td style="padding: 18px 20px; background-color: #ffffff; border-bottom: 1px solid #e2e8f0;">
-                                        <a href="tel:${telephone}" style="color: #13134C; text-decoration: none; font-size: 16px; font-weight: 500;">
+                                    <td style="padding: 15px; background-color: #ffffff; border-bottom: 1px solid #e9ecef;">
+                                        <a href="tel:${telephone}" style="color: #121212ff; text-decoration: none; font-size: 15px; font-weight: 600;">
                                             ${telephone}
                                         </a>
                                     </td>
                                 </tr>
                                 
+                                <!-- Email -->
                                 <tr>
-                                    <td style="padding: 18px 20px; background-color: #f7fafc; border-bottom: 1px solid #e2e8f0;">
-                                        <strong style="color: #2d3748; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
-                                            Email
-                                        </strong>
+                                    <td style="padding: 15px; background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                                        <strong style="color: #13134C; font-size: 14px;">Email</strong>
                                     </td>
-                                    <td style="padding: 18px 20px; background-color: #ffffff; border-bottom: 1px solid #e2e8f0;">
-                                        <a href="mailto:${email}" style="color: #13134C; text-decoration: none; font-size: 16px; font-weight: 500;">
+                                    <td style="padding: 15px; background-color: #ffffff; border-bottom: 1px solid #e9ecef;">
+                                        <a href="mailto:${email}" style="color: #020202ff; text-decoration: none; font-size: 15px; font-weight: 600;">
                                             ${email}
                                         </a>
                                     </td>
                                 </tr>
                                 
+                                <!-- Année -->
                                 <tr>
-                                    <td style="padding: 18px 20px; background-color: #f7fafc;">
-                                        <strong style="color: #2d3748; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
-                                            Année de naissance
-                                        </strong>
+                                    <td style="padding: 15px; background-color: #f8f9fa;">
+                                        <strong style="color: #13134C; font-size: 14px;">Année de naissance</strong>
                                     </td>
-                                    <td style="padding: 18px 20px; background-color: #ffffff; color: #1a202c; font-size: 16px;">
-                                        ${annee} <span style="color: #718096; font-size: 14px;">(${age} ans)</span>
+                                    <td style="padding: 15px; background-color: #ffffff; color: #333333; font-size: 15px;">
+                                        ${annee} (${age} ans)
                                     </td>
                                 </tr>
                             </table>
                             
-                            <!-- Bouton d'action -->
-                            <div style="margin-top: 35px; text-align: center;">
-                                <a href="mailto:${email}" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #13134C 0%, #E31E24 100%); color: #530c0cff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(19, 19, 76, 0.3);">
-                                    Répondre au contact
-                                </a>
-                            </div>
+                            <!-- Boutons d'action -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="padding: 10px;" width="50%">
+                                        <a href="mailto:${email}" style="display: block; padding: 15px 20px; background-color: #13134C; color: #ffffff; text-align: center; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 15px;">
+                                            Envoyer un email
+                                        </a>
+                                    </td>
+                                    <td style="padding: 10px;" width="50%">
+                                        <a href="tel:${telephone}" style="display: block; padding: 15px 20px; background-color: #E31E24; color: #ffffff; text-align: center; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 15px;">
+                                            Appeler
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
                         </td>
                     </tr>
                     
                     <!-- Pied de page -->
                     <tr>
-                        <td style="padding: 30px; background-color: #100c46ff; border-top: 1px solid #e2e8f0; text-align: center;">
-                            <p style="margin: 0; color: #718096; font-size: 13px; line-height: 1.6;">
-                                Cet email a été généré automatiquement par votre formulaire de contact COMAR.<br>
-                                <span style="color: #a0aec0;">Pour toute question, contactez votre administrateur système.</span>
+                        <td style="padding: 25px 30px; background-color: #f8f9fa; text-align: center; border-top: 1px solid #e9ecef; border-radius: 0 0 8px 8px;">
+                            <p style="margin: 0; color: #6c757d; font-size: 13px; line-height: 1.6;">
+                                <strong style="color: #13134C;">COMAR Assurances</strong><br>
+                                Formulaire de contact automatique<br>
+                                <span style="font-size: 12px; color: #adb5bd;">Ne pas répondre à cet email</span>
                             </p>
                         </td>
                     </tr>
@@ -274,13 +283,13 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`
 ╔════════════════════════════════════════════╗
-║   🚀 Serveur COMAR démarré avec succès     ║
+║   🚀 Serveur COMAR démarré avec succès    ║
 ║                                            ║
-║   📡 Port: ${PORT}                         ║
-║   🌐 URL: http://localhost:${PORT}         ║
+║   📡 Port: ${PORT}                           ║
+║   🌐 URL: http://localhost:${PORT}          ║
 ║   📧 Email: ${process.env.EMAIL_USER}      ║
-║                                             ║
-║   C'est sérieux 🛡️                         ║
+║                                            ║
+║   C'est sérieux 🛡️                        ║
 ╚════════════════════════════════════════════╝
   `);
 });
